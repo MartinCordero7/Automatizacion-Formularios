@@ -1,0 +1,116 @@
+[
+  {
+    "nombre_busqueda": "TERPEL",
+    "nombre_proceso": "Centros de Distribución Terpel",
+    "doc_sheet": "Stock diario de combustibles - TERPEL",
+    "pestana": "Oracle_Terpel"
+  },
+  {
+    "nombre_busqueda": "SERVIOIL",
+    "nombre_proceso": "Centros de Distribución Servioil",
+    "doc_sheet": "Stock diario de combustibles - SERVIOIL CIA. LTDA.",
+    "pestana": "Oracle_Servioil"
+  },
+  {
+    "nombre_busqueda": "REXCOMER",
+    "nombre_proceso": "Centros de Distribución Rexcomer",
+    "doc_sheet": "Stock diario de combustibles - REXCOMER",
+    "pestana": "Oracle_Rexcomer"
+  },
+  {
+    "nombre_busqueda": "PRIMAX",
+    "nombre_proceso": "Centros de Distribución Primax",
+    "doc_sheet": "Stock diario de combustibles - PRIMAX",
+    "pestana": "Oracle_Primax"
+  },
+  {
+    "nombre_busqueda": "PETROWORLD",
+    "nombre_proceso": "Centros de Distribución Petroworld",
+    "doc_sheet": "Stock diario de combustibles - PETROWORLD S.A.",
+    "pestana": "Oracle_Petroworld"
+  },
+  {
+    "nombre_busqueda": "PETROMAR",
+    "nombre_proceso": "Centros de Distribución Petromar",
+    "doc_sheet": "Stock diario de combustibles - PETROMAR",
+    "pestana": "Oracle_Petromar"
+  },
+  {
+    "nombre_busqueda": "PETROLRIOS",
+    "nombre_proceso": "Centros de Distribución Petrolrios",
+    "doc_sheet": "Stock diario de combustibles - PETROLRIOS",
+    "pestana": "Oracle_Petrolrios"
+  },
+  {
+    "nombre_busqueda": "PETROLEOS Y SERVICIOS",
+    "nombre_proceso": "Centros de Distribución Petroleos y Servicios",
+    "doc_sheet": "Stock diario de combustibles - PETROLEOS Y SERVICIOS",
+    "pestana": "Oracle_Petroleos_y_Servicios"
+  },
+  {
+    "nombre_busqueda": "PDV ECUADOR",
+    "nombre_proceso": "Centros de Distribución PDV Ecuador",
+    "doc_sheet": "Stock diario de combustibles - PDV ECUADOR S.A.",
+    "pestana": "Oracle_PDV_Ecuador"
+  },
+  {
+    "nombre_busqueda": "MASGAS",
+    "nombre_proceso": "Centros de Distribución Masgas",
+    "doc_sheet": "Stock diario de combustibles - MASGAS S.A.",
+    "pestana": "Oracle_Masgas"
+  },
+  {
+    "nombre_busqueda": "LISRONI",
+    "nombre_proceso": "Centros de Distribución Lisroni",
+    "doc_sheet": "Stock diario de combustibles - LISRONI S.A.",
+    "pestana": "Oracle_Lisroni"
+  },
+  {
+    "nombre_busqueda": "GASPETROLIUM",
+    "nombre_proceso": "Centros de Distribución Gaspetroleum",
+    "doc_sheet": "Stock diario de combustibles - GASPETROLIUM S.A.",
+    "pestana": "Oracle_Gaspetroleum"
+  },
+  {
+    "nombre_busqueda": "EP PETROECUADOR",
+    "nombre_proceso": "Centros de Distribución EP Petroecuador",
+    "doc_sheet": "Stock diario de combustibles - EP PETROECUADOR",
+    "pestana": "Oracle_EP_Petroecuador"
+  },
+  {
+    "nombre_busqueda": "ENERGYGAS",
+    "nombre_proceso": "Centros de Distribución Energygas",
+    "doc_sheet": "Stock diario de combustibles - ENERGYGAS S.A.",
+    "pestana": "Oracle_Energygas"
+  },
+  {
+    "nombre_busqueda": "ENERGY LIDER ENERGYLIDER",
+    "nombre_proceso": "Centros de Distribución Energy Lider",
+    "doc_sheet": "Stock diario de combustibles - ENERGY LIDER ENERGYLIDER S.A.S.",
+    "pestana": "Oracle_EnergyLider"
+  },
+  {
+    "nombre_busqueda": "ECUCOMSA",
+    "nombre_proceso": "Centros de Distribución Ecucomsa",
+    "doc_sheet": "Stock diario de combustibles - ECUCOMSA",
+    "pestana": "Oracle_Ecucomsa"
+  },
+  {
+    "nombre_busqueda": "COPEDESA",
+    "nombre_proceso": "Centros de Distribución Copesa",
+    "doc_sheet": "Stock diario de combustibles - COPEDESA S.A",
+    "pestana": "Oracle_Copedesa"
+  },
+  {
+    "nombre_busqueda": "COMDECSA",
+    "nombre_proceso": "Centros de Distribución Comdecsa",
+    "doc_sheet": "Stock diario de combustibles - COMDECSA",
+    "pestana": "Oracle_Comdesca"
+  },
+  {
+    "nombre_busqueda": "CLYAN",
+    "nombre_proceso": "Centros de Distribución Clyan",
+    "doc_sheet": "REGISTRO DE STOCKS DE COMBUSTIBLES (respuestas)",
+    "pestana": "Oracle_Clyan"
+  }
+]

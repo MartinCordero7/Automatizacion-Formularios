@@ -10,7 +10,7 @@ load_dotenv()
 # PARÁMETRO CONFIGURABLE POR EL USUARIO
 # ==========================================
 # Cambia esta variable por la comercializadora que desees consultar
-COMERCIALIZADORA = "CLYAN"
+COMERCIALIZADORA = "Petrolrios"
 # ==========================================
 
 def main():
@@ -52,8 +52,7 @@ def main():
                 SEG_NOMBRE,
                 TRIM(CEX_APELLIDO_PATERNO) || '/' || TRIM(CDI_IDENTIF) || '/' || CDI_CODIGO_SEQ AS DATO_CONCATENADO
             FROM CO.CO_VW_CENTROS_DISTRIB
-            WHERE UPPER(DCA_NOM_VIG) = 'REGISTRADO'
-              AND UPPER(SEG_NOMBRE) LIKE '%AUTOMOTRIZ%'
+            WHERE UPPER(DCA_NOM_VIG) IN ('REGISTRADO', 'SUSPENDIDO')
               AND CEX_APELLIDO_PATERNO IS NOT NULL
               AND UPPER(NOMBRE_COM) LIKE :busqueda
             ORDER BY CEX_APELLIDO_PATERNO ASC
@@ -74,7 +73,12 @@ def main():
             
         # Generar nombre de archivo dinámico basado en la comercializadora
         nombre_limpio = COMERCIALIZADORA.lower().replace(' ', '_')
-        nombre_archivo = f"consulta_{nombre_limpio}.csv"
+        directorio_salida = "Consultas estaciones"
+        
+        if not os.path.exists(directorio_salida):
+            os.makedirs(directorio_salida)
+            
+        nombre_archivo = os.path.join(directorio_salida, f"consulta_{nombre_limpio}.csv")
         
         # Guardar en CSV
         with open(nombre_archivo, mode='w', newline='', encoding='utf-8-sig') as f:
@@ -82,7 +86,7 @@ def main():
             writer.writerow(['COMERCIALIZADORA', 'NOMBRE CENTRO DE DISTRIBUCIÓN', 'CÓDIGO ARCH', 'ESTADO', 'SEGMENTO', 'DATO_CONCATENADO'])
             writer.writerows(registros)
 
-        print(f"\n✅ ¡Archivo '{nombre_archivo}' generado exitosamente en la carpeta actual!")
+        print(f"\n✅ ¡Archivo '{nombre_archivo}' generado exitosamente!")
 
         cursor.close()
         conexion.close()

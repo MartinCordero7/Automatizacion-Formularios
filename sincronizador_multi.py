@@ -3,14 +3,30 @@ import gspread
 import json
 import sys
 import os
+import csv
+from datetime import datetime
 from dotenv import load_dotenv
 
 load_dotenv()
 
+def registrar_log_csv(comercializadora, filas, estado, detalles):
+    archivo_csv = 'historial_ejecuciones.csv'
+    existe = os.path.exists(archivo_csv)
+    
+    with open(archivo_csv, mode='a', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        if not existe:
+            writer.writerow(['Fecha_Hora', 'Comercializadora', 'Filas_Actualizadas', 'Estado', 'Detalles'])
+        
+        fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        writer.writerow([fecha_actual, comercializadora, filas, estado, detalles])
+
 def cargar_configuracion():
     ruta_json = 'comercializadoras.json'
     if not os.path.exists(ruta_json):
-        print(f"Error: No se encontró el archivo {ruta_json}")
+        error_msg = f"No se encontró el archivo {ruta_json}"
+        print(f"Error: {error_msg}")
+        registrar_log_csv("SISTEMA", 0, "ERROR FATAL", error_msg)
         sys.exit(1)
     
     with open(ruta_json, 'r', encoding='utf-8') as file:
@@ -52,8 +68,7 @@ def obtener_datos_oracle(nombre_comercializadora):
             SELECT DISTINCT 
                 TRIM(CEX_APELLIDO_PATERNO) || '/' || TRIM(CDI_IDENTIF) || '/' || CDI_CODIGO_SEQ AS DATO_CONCATENADO
             FROM CO.CO_VW_CENTROS_DISTRIB
-            WHERE UPPER(DCA_NOM_VIG) = 'REGISTRADO'
-              AND UPPER(SEG_NOMBRE) LIKE '%AUTOMOTRIZ%'
+            WHERE UPPER(DCA_NOM_VIG) IN ('REGISTRADO', 'SUSPENDIDO')
               AND CEX_APELLIDO_PATERNO IS NOT NULL
               AND UPPER(NOMBRE_COM) LIKE :busqueda
             ORDER BY DATO_CONCATENADO ASC
@@ -69,11 +84,12 @@ def obtener_datos_oracle(nombre_comercializadora):
         conexion.close()
         
         # Retornar una lista plana en lugar de lista de tuplas
-        return [fila[0] for fila in resultados]
+        return [fila[0] for fila in resultados], None
 
     except Exception as e:
-        print(f"Error en consulta Oracle para {nombre_comercializadora}: {e}")
-        return []
+        error_msg = str(e)
+        print(f"Error en consulta Oracle para {nombre_comercializadora}: {error_msg}")
+        return None, error_msg
 
 def subir_a_sheets(cliente_gspread, datos, doc_sheet, pestana):
     try:
@@ -94,9 +110,16 @@ def subir_a_sheets(cliente_gspread, datos, doc_sheet, pestana):
         hoja.clear()
         hoja.update(values=datos_formateados, range_name='A1')
         print(f"Se actualizaron {len(datos)} registros en la pestaña '{pestana}'.")
+        return True, None
         
+    except gspread.exceptions.SpreadsheetNotFound:
+        error_msg = f"No se encontró el documento '{doc_sheet}'. Asegúrate de compartirlo con el correo de la cuenta de servicio."
+        print(f"Error actualizando Google Sheets ({pestana}): {error_msg}")
+        return False, error_msg
     except Exception as e:
-        print(f"Error actualizando Google Sheets ({pestana}): {e}")
+        error_msg = str(e)
+        print(f"Error actualizando Google Sheets ({pestana}): {error_msg}")
+        return False, error_msg
 
 def main():
     print("=== INICIANDO SINCRONIZACIÓN MULTI-COMERCIALIZADORA ===")
@@ -108,13 +131,15 @@ def main():
     # 2. Autenticación Google Sheets (Una sola vez para todo el script)
     print("Autenticando con Google Sheets...")
     try:
-        cliente_gspread = gspread.oauth(
-            credentials_filename='credenciales.json',
-            authorized_user_filename='token.json'
+        service_account_file = os.environ.get("GOOGLE_SERVICE_ACCOUNT_FILE", "leafy-thunder-507913-s6-2f92ae133845.json")
+        cliente_gspread = gspread.service_account(
+            filename=service_account_file
         )
     except Exception as e:
-        print(f"Error de autenticación con Google Sheets: {e}")
-        print("Asegúrate de tener credenciales.json y token.json válidos.")
+        error_msg = f"Error de autenticación con Google Sheets: {e}"
+        print(error_msg)
+        print(f"Asegúrate de tener el archivo '{service_account_file}' válido.")
+        registrar_log_csv("SISTEMA", 0, "ERROR FATAL", error_msg)
         sys.exit(1)
 
     # 3. Procesar cada comercializadora
@@ -123,10 +148,15 @@ def main():
         print(f"\nProcesando: {nombre}...")
         
         # Obtener datos de Oracle
-        datos = obtener_datos_oracle(nombre)
+        datos, error_oracle = obtener_datos_oracle(nombre)
         
+        if error_oracle:
+            registrar_log_csv(nombre, 0, "ERROR", f"Error Oracle: {error_oracle}")
+            continue
+            
         if not datos:
             print(f"No se encontraron registros para {nombre}.")
+            registrar_log_csv(nombre, 0, "ADVERTENCIA", "No se encontraron registros en Oracle")
             continue
             
         print(f"Se obtuvieron {len(datos)} registros de Oracle.")
@@ -137,7 +167,12 @@ def main():
             print(f"  - {d}")
         
         # Subir a Google Sheets
-        subir_a_sheets(cliente_gspread, datos, conf['doc_sheet'], conf['pestana'])
+        exito_sheets, error_sheets = subir_a_sheets(cliente_gspread, datos, conf['doc_sheet'], conf['pestana'])
+        
+        if exito_sheets:
+            registrar_log_csv(nombre, len(datos), "EXITO", "Sincronización completada correctamente")
+        else:
+            registrar_log_csv(nombre, len(datos), "ERROR", f"Error Sheets: {error_sheets}")
 
     print("\n=== PROCESO FINALIZADO ===")
 

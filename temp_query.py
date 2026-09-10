@@ -10,7 +10,7 @@ load_dotenv()
 # PARÁMETRO CONFIGURABLE POR EL USUARIO
 # ==========================================
 # Cambia esta variable por la comercializadora que desees consultar
-COMERCIALIZADORA = "Petrolrios"
+COMERCIALIZADORA = "PRIMAX"
 # ==========================================
 
 def main():
@@ -63,7 +63,7 @@ def main():
         registros = cursor.fetchall()
         
         if not registros:
-            print(f"\n⚠️ No se encontraron registros para la comercializadora '{COMERCIALIZADORA}'.")
+            print(f"\n No se encontraron registros para la comercializadora '{COMERCIALIZADORA}'.")
             return
 
         print(f"\n=== SE ENCONTRARON {len(registros)} REGISTROS ===")
@@ -86,12 +86,12 @@ def main():
             writer.writerow(['COMERCIALIZADORA', 'NOMBRE CENTRO DE DISTRIBUCIÓN', 'CÓDIGO ARCH', 'ESTADO', 'SEGMENTO', 'DATO_CONCATENADO'])
             writer.writerows(registros)
 
-        print(f"\n✅ ¡Archivo '{nombre_archivo}' generado exitosamente!")
+        print(f"\n ¡Archivo '{nombre_archivo}' generado exitosamente!")
 
         cursor.close()
         conexion.close()
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f" Error: {e}")
 
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding='utf-8')

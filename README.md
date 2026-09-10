@@ -52,24 +52,24 @@ Si solo quieres generar un CSV rápido para una comercializadora:
 
 ## 3. Posibles errores y cómo solucionarlos
 
-### ❌ Error: "No se encontró el documento '[Nombre del Excel]'"
+###  Error: "No se encontró el documento '[Nombre del Excel]'"
 **SOLUCIÓN:**  
 El programa utiliza un "robot" (cuenta de servicio) para leer y escribir los Google Sheets. Ese robot tiene un correo:  
 `sincronizador@leafy-thunder-507913-s6.iam.gserviceaccount.com`
 
 Ve a tu Google Drive, busca el archivo que menciona el error, dale al botón "Compartir", y agrega ese correo dándole permisos de **"Editor"**. *(Tip: Si metes todos tus reportes en una sola carpeta de Drive, puedes compartir directamente toda la carpeta con ese correo).*
 
-### ❌ Error: "Falta GOOGLE_SERVICE_ACCOUNT_FILE" o "No se encontró el archivo leafy-thunder..."
+###  Error: "Falta GOOGLE_SERVICE_ACCOUNT_FILE" o "No se encontró el archivo leafy-thunder..."
 **SOLUCIÓN:**  
 Revisa que el archivo JSON del token se encuentre en la carpeta principal del proyecto y que su nombre esté correctamente escrito en el archivo `.env`.
 
-### ❌ Error: Fallo de conexión a Oracle o Timeout
+###  Error: Fallo de conexión a Oracle o Timeout
 **SOLUCIÓN:**
 1. Verifica que estés conectado a la **VPN** si la base de datos es interna.
 2. Asegúrate de que las credenciales (IP, usuario y clave) en el archivo `.env` sigan siendo válidas.
 3. Verifica que la ruta `ORACLE_LIB_DIR` en el `.env` exista en tu computadora y sea correcta.
 
-### ❌ Error: "No module named oracledb / gspread"
+###  Error: "No module named oracledb / gspread"
 **SOLUCIÓN:**  
 Faltan instalar las librerías en tu entorno de Python. Ejecuta en tu consola:
 ```bash
